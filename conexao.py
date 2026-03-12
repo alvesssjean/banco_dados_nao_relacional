@@ -1,7 +1,6 @@
-import pymongo
 from pymongo import MongoClient
 
-connection_string = "mongodb://localhost:27018"
+connection_string = "mongodb://mongodb:27018"
 
 try:
 
@@ -19,4 +18,3 @@ try:
 
 except Exception as e:
     print(f"Erro ao conectar: {e}")
-
