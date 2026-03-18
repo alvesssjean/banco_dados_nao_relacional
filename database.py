@@ -1,20 +1,11 @@
 from pymongo import MongoClient
 
-connection_string = "mongodb://mongodb:27018"
+MONGO_URL = "mongodb://localhost:27018"
 
-try:
+client = MongoClient(MONGO_URL)
 
-    client = MongoClient(connection_string)
+db = client["aula_nosql"]
 
-    client.admin.command("ping")
-    
-    db = client["nomedadatabase"]
-
-    colecao = db["users"]
-    
-    print("Conexão estabelecida com sucesso!")
-    
+users_collection = db["users"]
 
 
-except Exception as e:
-    print(f"Erro ao conectar: {e}")

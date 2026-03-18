@@ -11,9 +11,10 @@ def list_users():
     for user in users_collection.find():
         user["_id"] = str(user["_id"])
         users.append(user)
-    return user
 
-@router.post("/create_users")
-def create_users(user: User):
-    users_collection.insert_one(user)
-    return {"Message": "Usuário criado"}
+    return users
+
+#POST - CREATE USER
+#GET - USER BY ID 
+
+--
