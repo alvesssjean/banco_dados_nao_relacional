@@ -9,4 +9,3 @@ app.include_router(router)
 def home():
     return {"Message": "FastAPI + MongoDB + Docker"}
 
---
