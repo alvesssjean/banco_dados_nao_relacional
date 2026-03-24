@@ -4,8 +4,8 @@ MONGO_URL = "mongodb://localhost:27018"
 
 client = MongoClient(MONGO_URL)
 
-db = client["aula_nosql"]
+db = client["aula_nosql2"]
 
-users_collection = db["users"]
+cars_collection = db["cars"]
 
 

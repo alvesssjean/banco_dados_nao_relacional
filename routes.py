@@ -1,62 +1,65 @@
 from fastapi import APIRouter
-from database import users_collection
-from schemas import User
+from database import cars_collection
+from schemas import Car
+from bson import ObjectId
 
 router = APIRouter()
 
-@router.get("/users")
-def list_users():
-    users = []
+@router.get("/cars")
+def list_cars():
+    cars = []
 
-    for user in users_collection.find():
-        user["_id"] = str(user["_id"])
-        users.append(user)
+    for car in cars_collection.find():
+        car["_id"] = str(car["_id"])
+        cars.append(car)
 
-    return users
+    return cars
 
 #POST - CREATE USER
-@router.post("/users")
-def create_user(user: User):
-    user_dict = user.model_dump()
-    result = users_collection.insert_one(user_dict)
+@router.post("/cars")
+def create_car(car: Car):
+    cars_dict = car.model_dump()
+    result = cars_collection.insert_one(cars_dict)
 
     return {
-        "message" :"User created",
+        "message" :"Car created",
         "id": str(result.inserted_id)
     } 
 
 #GET - USER BY ID
 
-@router.get("/users/{user_id}")
-def get_user(user_id: str):
+@router.get("/cars/{car_id}")
+def get_car(car_id: str):
     from bson import ObjectId
 
-    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    car = cars_collection.find_one({"_id": ObjectId(car_id)})
 
-    if user:
-        user["_id"] = str(user["_id"])
-        return user
-    return {"error": "user not found"}
-
-
-@router.delete("/users/{user_id}")
-def del_user(user_id: str):
-    from bson import ObjectId
-    result = users_collection.find_one_and_delete({"_id": ObjectId(user_id)})
-
-    if not result:
-        return {"error": "user not found"}
-    return {"message": "delete succesfly"}
+    if car:
+        car["_id"] = str(car["_id"])
+        return car
+    return {"error": "car not found"}
 
 
-@router.put("/users/{user_id}")
-def update_user(user: User, user_id: str):
-    from bson import ObjectId
-    user_dict = user.model_dump()
-    user = users_collection.find_one_and_replace({"_id": ObjectId(user_id)}, user_dict)
+#UPDATE
+@router.put("/cars/{car_id}")
+def update_user(car: Car, car_id: str):
+    car_dict = car.model_dump()
+    result = cars_collection.update_one(
+        {"_id": ObjectId(car_id)},
+        {"$set": car_dict}
+    )
+    if result.matched_count ==0:
+        return {"error": "car not found"}
+    else:
+        return {"message": "user updated succesfly"}
 
-    if not user:
-        return {"message":"user not found"}
-
-    return {"message": "update succesfly"}
+#DELETE
+@router.delete("/cars/{car_id}")
+def delete_car(car_id: str):
+    result = cars_collection.delete_one(
+        {"_id": ObjectId(car_id)}
+    )
+    if result.deleted_count == 0:
+        return {"error": "car not found"}
+    return {"message":"user deleted"}
 
