@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\ALUNO\Documents\aula18.03\banco_dados_nao_relacional\venv
+set VIRTUAL_ENV=C:\Users\ALUNO\Documents\aula24.03\banco_dados_nao_relacional\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
