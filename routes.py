@@ -1,9 +1,10 @@
 from fastapi import APIRouter
-from database import cars_collection
-from schemas import Car
+from database import cars_collection, sales_collection
+from schemas import Car, SalesByCategory
 from bson import ObjectId
 
 router = APIRouter()
+
 
 @router.get("/cars")
 def list_cars():
@@ -63,3 +64,28 @@ def delete_car(car_id: str):
         return {"error": "car not found"}
     return {"message":"user deleted"}
 
+
+
+@router.get("/reports/sales-by-category", response_model=list[SalesByCategory])
+async def get_sales_report():
+ pipeline = [
+ {"$match": {"status": "completed"}},
+ {"$group": {
+ "_id": "$category",
+ "total": {"$sum": "$price"}
+ }},
+ {"$sort": {"total": -1}}
+ ]
+
+ cursor = collection.aggregate(pipeline)
+ return await cursor.to_list(length=100)
+
+@router.get("/sales")
+def list_sales():
+    sales = []
+
+    for sale in sales_collection.find():
+        sale["_id"] = str(sale["_id"])
+        sales.append(sale)
+
+    return sales

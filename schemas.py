@@ -5,3 +5,6 @@ class Car(BaseModel):
     marca: str
     ano: int
 
+class SalesByCategory(BaseModel):
+    id: str
+    total: float

@@ -8,4 +8,6 @@ db = client["aula_nosql2"]
 
 cars_collection = db["cars"]
 
+sales_collection = db["sales"]
+
 
